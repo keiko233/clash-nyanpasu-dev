@@ -1,0 +1,27 @@
+.dragIndicatorBox {
+  :global(.dragIndicator) {
+    width: 0;
+    border-radius: 28px;
+    transition: all 0.3s;
+
+    :global(.icon) {
+      width: 0;
+      padding: 2px;
+      opacity: 0;
+      transition: all 0.3s;
+    }
+  }
+
+  &:hover {
+    :global(.dragIndicator) {
+      width: 28px;
+      height: 28px;
+      margin-right: 8px;
+
+      :global(.icon) {
+        width: 24px;
+        opacity: 1;
+      }
+    }
+  }
+}

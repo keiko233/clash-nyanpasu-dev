@@ -15,6 +15,7 @@ import {
   MenuItem,
   Menu,
   CircularProgress,
+  Paper,
 } from "@mui/material";
 import { RefreshRounded, DragIndicator } from "@mui/icons-material";
 import { atomLoadingCache } from "@/services/states";
@@ -23,6 +24,8 @@ import { EditorViewer } from "./editor-viewer";
 import { ProfileBox } from "./profile-box";
 import parseTraffic from "@/utils/parse-traffic";
 import { useNotification } from "@/hooks/use-notification";
+import { classNames } from "@/utils";
+import styles from "./profile-item.module.scss";
 
 const round = keyframes`
   from { transform: rotate(0deg); }
@@ -226,7 +229,10 @@ export const ProfileItem = (props: Props) => {
           </Box>
         )}
 
-        <Box position="relative">
+        <Box
+          position="relative"
+          className={classNames(styles.dragIndicatorBox)}
+        >
           <Box sx={{ display: "flex", justifyContent: "start" }}>
             <Box
               ref={setNodeRef}
@@ -234,7 +240,9 @@ export const ProfileItem = (props: Props) => {
               {...attributes}
               {...listeners}
             >
-              <DragIndicator sx={{ cursor: "grab" }} />
+              <Paper className="dragIndicator">
+                <DragIndicator className="icon" sx={{ cursor: "grab" }} />
+              </Paper>
             </Box>
 
             <Typography
