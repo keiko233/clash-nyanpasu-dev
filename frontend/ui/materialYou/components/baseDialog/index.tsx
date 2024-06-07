@@ -97,7 +97,7 @@ export const BaseDialog = ({
       open={open}
       onClose={handleClose}
       keepMounted={mounted}
-      TransitionComponent={BaseDialogTransition}
+      // TransitionComponent={BaseDialogTransition}
       sx={sx}
     >
       <DialogTitle sx={divider ? { pb: 2 } : null}>{title}</DialogTitle>

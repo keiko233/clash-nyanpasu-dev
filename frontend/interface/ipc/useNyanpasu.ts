@@ -16,7 +16,7 @@ export const useNyanpasu = (options?: {
 }) => {
   const { getConfigs, setConfigs, deleteConnections } = useClash();
 
-  const { data, error, mutate } = useSWR<VergeConfig>(
+  const { data, error, mutate, isLoading, isValidating } = useSWR<VergeConfig>(
     "nyanpasuConfig",
     service.getNyanpasuConfig,
   );
@@ -106,7 +106,8 @@ export const useNyanpasu = (options?: {
 
   return {
     nyanpasuConfig: data,
-    isLoading: !data && !error,
+    isLoading,
+    isValidating,
     isError: error,
     setNyanpasuConfig,
     getCoreVersion: tauri.getCoreVersion,

@@ -13,7 +13,7 @@ import { proxyGroupAtom, proxyGroupSortAtom } from "@/store";
 import { CSSProperties, memo, useEffect, useMemo, useState } from "react";
 import { classNames } from "@/utils";
 import { VList } from "virtua";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 
 type History = Clash.Proxy["history"];
 
@@ -264,7 +264,7 @@ export const NodeList = () => {
   };
 
   return (
-    <AnimatePresence initial={false}>
+    <AnimatePresence initial={false} mode="sync">
       <VList style={{ flex: 1 }} className="p-2">
         {renderList?.map((node, index) => {
           return (

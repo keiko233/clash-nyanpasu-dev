@@ -1,5 +1,6 @@
 import { useTheme } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useSetState } from "ahooks";
+import { useEffect } from "react";
 
 export const useBreakpoint = (
   columnMapping: { [key: string]: number } = {
@@ -12,7 +13,7 @@ export const useBreakpoint = (
 ) => {
   const { breakpoints } = useTheme();
 
-  const [breakpoint, setBreakpoint] = useState({
+  const [breakpoint, setBreakpoint] = useSetState({
     key: "sm",
     column: 1,
   });
@@ -25,7 +26,7 @@ export const useBreakpoint = (
       }
     }
 
-    setBreakpoint((p) => ({ ...p, column: columnMapping["default"] }));
+    setBreakpoint({ column: columnMapping["default"] });
   };
 
   useEffect(() => {
