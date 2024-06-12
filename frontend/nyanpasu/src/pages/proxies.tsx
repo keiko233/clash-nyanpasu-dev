@@ -13,19 +13,10 @@ import { useTranslation } from "react-i18next";
 import { useNyanpasu, useClashCore, Clash } from "@nyanpasu/interface";
 import { SidePage } from "@nyanpasu/ui";
 import { DelayButton, GroupList, NodeList } from "@/components/proxies";
-import { Public } from "@mui/icons-material";
 import { useAtom } from "jotai";
 import { proxyGroupAtom, proxyGroupSortAtom } from "@/store";
 import { AnimatePresence, motion } from "framer-motion";
-
-const ContentDisplay = ({ message }: { message: string }) => (
-  <div className="h-full w-full flex items-center justify-center">
-    <div className="flex flex-col items-center gap-4">
-      <Public className="!size-16" />
-      <b>{message}</b>
-    </div>
-  </div>
-);
+import ContentDisplay from "@/components/base/content-display";
 
 const ProxyGroupName = memo(function ProxyGroupName({
   name,

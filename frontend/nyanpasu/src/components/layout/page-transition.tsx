@@ -1,8 +1,8 @@
 import { useVerge } from "@/hooks/use-verge";
 import { classNames } from "@/utils";
-import { motion, type HTMLMotionProps } from "framer-motion";
-import { useState } from "react";
-import { useOutlet } from "react-router-dom";
+import { AnimatePresence, motion, type HTMLMotionProps } from "framer-motion";
+import { cloneElement, useEffect, useState } from "react";
+import { Outlet, useLocation, useOutlet } from "react-router-dom";
 
 type Props = {
   children?: React.ReactNode;
@@ -92,7 +92,7 @@ const AnimatedOutlet: React.FC = () => {
   return <>{outlet}</>;
 };
 
-export default function PageTransition() {
+export default function PageTransition({ className }: { className?: string }) {
   const { verge } = useVerge();
   const { theme_setting } = verge ?? {};
   const variants = overrideVariantsTransition(
@@ -103,16 +103,19 @@ export default function PageTransition() {
         }
       : undefined,
   ) as typeof pageTransitionVariants;
+
   return (
-    <motion.div
-      className={classNames("page-transition", "the-content")}
-      key={location.pathname}
-      variants={variants[verge?.page_transition_animation ?? "slide"]}
-      initial="initial"
-      animate="visible"
-      exit="hidden"
-    >
-      <AnimatedOutlet />
-    </motion.div>
+    <AnimatePresence mode="popLayout" initial={false}>
+      <motion.div
+        className={classNames("page-transition", className)}
+        key={location.pathname}
+        variants={variants[verge?.page_transition_animation ?? "slide"]}
+        initial="initial"
+        animate="visible"
+        exit="hidden"
+      >
+        <AnimatedOutlet />
+      </motion.div>
+    </AnimatePresence>
   );
 }

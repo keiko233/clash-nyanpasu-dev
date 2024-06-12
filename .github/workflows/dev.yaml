@@ -9,19 +9,43 @@ env:
   RUST_BACKTRACE: short
 
 jobs:
-  release:
+  windows_build:
+    name: Windows Build
+    uses: ./.github/workflows/deps-build-windows-nsis.yaml
+    with:
+      portable: true
+      nightly: true
+
+  linux_build:
+    name: Linux Build
+    uses: ./.github/workflows/deps-build-linux.yaml
+    with:
+      nightly: true
+
+  macos_amd64_build:
+    name: macOS AMD64 Build
+    uses: ./.github/workflows/deps-build-macos.yaml
+    with:
+      nightly: true
+
+  macos_aarch64_build:
+    name: macOS AMD64 Build
+    uses: ./.github/workflows/deps-build-macos.yaml
+    with:
+      nightly: true
+      aarch64: true
+
+  buil1d:
     strategy:
       matrix:
         targets:
           - os: windows-latest
             category: nsis # and portable
-          # - os: windows-latest
-          #   category: msi
           - os: ubuntu-latest
             category: all
           - os: macos-13
             category: amd64
-          - os: macos-13
+          - os: macos-14
             category: aarch64
 
     runs-on: ${{ matrix.targets.os }}

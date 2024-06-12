@@ -1,12 +1,13 @@
 import { getOctokit } from "@actions/github";
 import fs from "fs-extra";
-import path from "node:path";
-import { MANIFEST_DIR } from "./utils/env";
+import { MANIFEST_DIR, MANIFEST_VERSION_PATH } from "./utils/env";
 import { consola } from "./utils/logger";
 
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN || "";
+if (!process.env.GITHUB_TOKEN) {
+  throw new Error("GITHUB_TOKEN is required");
+}
 
-const MANIFEST_VERSION_PATH = path.join(MANIFEST_DIR, "version.json");
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 export enum SupportedArch {
   // blocked by clash-rs

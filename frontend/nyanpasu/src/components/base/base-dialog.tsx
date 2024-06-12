@@ -56,7 +56,7 @@ export function BaseDialog(props: Props) {
       open={open}
       onClose={props.onClose}
       keepMounted
-      TransitionComponent={BaseDialogTransition}
+      // TransitionComponent={BaseDialogTransition}
     >
       <DialogTitle>{title}</DialogTitle>
 
