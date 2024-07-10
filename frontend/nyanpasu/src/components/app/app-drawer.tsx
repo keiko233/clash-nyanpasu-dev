@@ -11,6 +11,7 @@ import { classNames } from "@/utils";
 import getSystem from "@/utils/get-system";
 import { useNyanpasu } from "@nyanpasu/interface";
 import { languageQuirks } from "@/utils/language";
+import { Allotment } from "allotment";
 
 export const AppDrawer = ({ isDrawer }: { isDrawer?: boolean }) => {
   const { palette } = useTheme();
@@ -161,20 +162,9 @@ export const AppDrawer = ({ isDrawer }: { isDrawer?: boolean }) => {
       </Backdrop>
     </>
   ) : (
-    <Panel
-      id="sidebar"
-      defaultSize={
-        languageQuirks[nyanpasuConfig?.language ?? "en"].drawer.minWidth
-      }
-      order={1}
-      minSize={languageQuirks[nyanpasuConfig?.language ?? "en"].drawer.minWidth}
-      collapsedSize={11}
-      maxSize={36}
-      onResize={handleResize}
-      collapsible
-    >
+    <Allotment.Pane className="h-full" minSize={96}>
       <Content />
-    </Panel>
+    </Allotment.Pane>
   );
 };
 

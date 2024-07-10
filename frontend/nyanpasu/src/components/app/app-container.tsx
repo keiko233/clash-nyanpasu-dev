@@ -7,6 +7,8 @@ import { LayoutControl } from "../layout/layout-control";
 import styles from "./app-container.module.scss";
 import AppDrawer from "./app-drawer";
 import { alpha, useTheme } from "@mui/material";
+import { Allotment } from "allotment";
+import "allotment/dist/style.css";
 
 const OS = getSystem();
 
@@ -38,33 +40,31 @@ export const AppContainer = ({
         e.preventDefault();
       }}
     >
-      <PanelGroup autoSaveId="layout_sidebar" direction="horizontal">
+      <Allotment>
         <AppDrawer isDrawer={isDrawer} data-windrag />
 
-        {!isDrawer && <PanelResizeHandle className={styles["resize-bar"]} />}
+        {/* {!isDrawer && <PanelResizeHandle className={styles["resize-bar"]} />} */}
 
-        <Panel order={2} minSize={50}>
-          <div className={styles.container}>
-            {OS === "windows" && (
-              <LayoutControl className="fixed right-6 top-1.5 !z-top" />
-            )}
+        <Allotment.Pane snap className={styles.container}>
+          {OS === "windows" && (
+            <LayoutControl className="fixed right-6 top-1.5 !z-top" />
+          )}
 
-            {OS === "macos" && (
-              <div
-                className="fixed z-top left-6 top-3 h-8 w-[4.5rem] rounded-full"
-                style={{ backgroundColor: alpha(palette.primary.main, 0.1) }}
-              />
-            )}
-
+          {OS === "macos" && (
             <div
-              className={OS === "macos" ? "h-[2.75rem]" : "h-9"}
-              data-windrag
+              className="fixed z-top left-6 top-3 h-8 w-[4.5rem] rounded-full"
+              style={{ backgroundColor: alpha(palette.primary.main, 0.1) }}
             />
+          )}
 
-            {children}
-          </div>
-        </Panel>
-      </PanelGroup>
+          <div
+            className={OS === "macos" ? "h-[2.75rem]" : "h-9"}
+            data-windrag
+          />
+
+          {children}
+        </Allotment.Pane>
+      </Allotment>
     </Paper>
   );
 };
