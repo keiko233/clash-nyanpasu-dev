@@ -14,4 +14,24 @@ monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
   allowJs: true,
 });
 
+const source = `declare type ClashConfig = {
+  proxies: any[];
+};
+
+/**
+ * @deprecated since Clash Nyanpasu 1.6.0
+ */
+declare function main(params: ClashConfig): ClashConfig;
+
+declare function config(params: ClashConfig): ClashConfig;
+
+default function(config: ClashConfig): ClashConfig;
+`;
+
+const dtsuri = "ts:filename/clash-config.d.ts";
+
+monaco.languages.typescript.javascriptDefaults.addExtraLib(source, dtsuri);
+
+monaco.editor.createModel(source, "typescript", monaco.Uri.parse(dtsuri));
+
 export { monaco };

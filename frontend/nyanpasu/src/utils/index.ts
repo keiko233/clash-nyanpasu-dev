@@ -1,15 +1,6 @@
 import { includes, isArray, isObject, isString, some } from "lodash-es";
 import { EnvInfos } from "@nyanpasu/interface";
-
-/**
- * classNames filter out falsy values and join the rest with a space
- * @param classes - array of classes
- * @returns string of classes
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import { cn as classNames } from "@nyanpasu/ui";
 
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -52,3 +43,5 @@ export function formatEnvInfos(envs: EnvInfos) {
   }
   return result;
 }
+
+export { classNames };
