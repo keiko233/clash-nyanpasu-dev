@@ -69,10 +69,10 @@ export default defineConfig(({ command }) => {
       monaco({ languageWorkers: ["editorWorkerService", "typescript"] }),
       isDev && devtools(),
     ],
-    optimizeDeps: {
-      entries: ["./src/pages/**/*.tsx", "./src/main.tsx"],
-      include: ["@emotion/styled"],
-    },
+    // optimizeDeps: {
+    //   entries: ["./src/pages/**/*.tsx", "./src/main.tsx"],
+    //   include: ["@emotion/styled"],
+    // },
     esbuild: {
       drop: isDev ? undefined : ["console", "debugger"],
     },

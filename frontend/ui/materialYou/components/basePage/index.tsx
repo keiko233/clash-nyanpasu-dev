@@ -1,4 +1,4 @@
-import { CSSProperties, FC, ReactNode } from "react";
+import { CSSProperties, FC, ReactNode, useRef } from "react";
 import { BaseErrorBoundary } from "./baseErrorBoundary";
 import Header from "./header";
 import "./style.scss";
@@ -12,6 +12,7 @@ interface BasePageProps {
   contentStyle?: CSSProperties;
   sectionStyle?: CSSProperties;
   full?: boolean;
+  noViewport?: boolean;
   children?: ReactNode | AsyncComponentProps["component"];
 }
 
@@ -21,9 +22,18 @@ export const BasePage: FC<BasePageProps> = ({
   contentStyle,
   sectionStyle,
   full,
+  noViewport,
   children,
 }) => {
   const isAsyncComponent = typeof children === "function";
+
+  const Children = () => {
+    return isAsyncComponent ? (
+      <AsyncComponent component={children} />
+    ) : (
+      children
+    );
+  };
 
   return (
     <BaseErrorBoundary>
@@ -34,16 +44,19 @@ export const BasePage: FC<BasePageProps> = ({
           className="MDYBasePage-container relative h-full w-full overflow-hidden rounded-3xl"
           style={contentStyle}
         >
-          <ScrollArea.Viewport
-            className={cn("h-full w-full [&>div]:!block", full ?? "p-6")}
-            style={sectionStyle}
-          >
-            {isAsyncComponent ? (
-              <AsyncComponent component={children} />
-            ) : (
-              children
-            )}
-          </ScrollArea.Viewport>
+          {noViewport ? (
+            <Children />
+          ) : (
+            <ScrollArea.Viewport
+              className={cn(
+                "relative h-full w-full [&>div]:!block",
+                full ?? "p-6",
+              )}
+              style={sectionStyle}
+            >
+              <Children />
+            </ScrollArea.Viewport>
+          )}
 
           <ScrollArea.Scrollbar
             className="flex touch-none select-none py-6 pr-1.5"
@@ -64,3 +77,5 @@ export const BasePage: FC<BasePageProps> = ({
     </BaseErrorBoundary>
   );
 };
+
+export const ScrollAreaViewport = ScrollArea.Viewport;
