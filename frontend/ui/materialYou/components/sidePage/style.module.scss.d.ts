@@ -4,7 +4,7 @@ declare const classNames: {
   readonly "MDYSidePage-Layout": "MDYSidePage-Layout";
   readonly LeftContainer: "LeftContainer";
   readonly "LeftContainer-Content": "LeftContainer-Content";
-  readonly RightContainer: "RightContainer";
-  readonly "RightContainer-Content": "RightContainer-Content";
+  readonly "Container-common": "Container-common";
+  readonly "ScrollArea-Thumb": "ScrollArea-Thumb";
 };
 export default classNames;
