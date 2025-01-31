@@ -130,7 +130,7 @@ pub async fn import_profile(url: String, option: Option<RemoteProfileOptionsBuil
 }
 
 #[tauri::command]
-#[specta::specta]
+// #[specta::specta]
 pub async fn create_profile(item: Mapping, file_data: Option<String>) -> Result {
     let kind = item
         .get("type")
@@ -278,7 +278,7 @@ pub async fn patch_profiles_config(profiles: ProfilesBuilder) -> Result {
 
 /// 修改某个profile item的
 #[tauri::command]
-#[specta::specta]
+// #[specta::specta]
 pub async fn patch_profile(uid: String, profile: Mapping) -> Result {
     tracing::debug!("patch profile: {uid} with {profile:?}");
     {
@@ -341,7 +341,7 @@ pub fn view_profile(app_handle: tauri::AppHandle, uid: String) -> Result {
 }
 
 #[tauri::command]
-#[specta::specta]
+// #[specta::specta]
 pub fn read_profile_file(uid: String) -> Result<String> {
     let profiles = Config::profiles();
     let profiles = profiles.latest();
@@ -378,7 +378,7 @@ pub fn get_clash_info() -> Result<ClashInfo> {
 }
 
 #[tauri::command]
-#[specta::specta]
+// #[specta::specta]
 pub fn get_runtime_config() -> Result<Option<Mapping>> {
     Ok(Config::runtime().latest().config.clone())
 }
@@ -431,7 +431,7 @@ pub async fn get_ipsb_asn() -> Result<serde_json::Value> {
 }
 
 #[tauri::command]
-#[specta::specta]
+// #[specta::specta]
 #[tracing_attributes::instrument]
 pub async fn patch_clash_config(payload: Mapping) -> Result {
     tracing::debug!("patch_clash_config: {payload:?}");
@@ -477,21 +477,36 @@ pub async fn restart_sidecar() -> Result {
     Ok(())
 }
 
+// TODO: remove this struct use Sysproxy
+#[derive(specta::Type, serde::Serialize)]
+pub struct GetSysProxyResponse {
+    // Sysproxy fields (manually defined),
+    // because specta not support serde(flatten)
+    pub enable: bool,
+    pub host: String,
+    pub port: u16,
+    pub bypass: String,
+
+    // old version compatible 
+    pub server: String,
+}
+
 /// get the system proxy
+/// server field is the combination of host and port
 #[tauri::command]
 #[specta::specta]
-pub fn get_sys_proxy() -> Result<Mapping> {
+pub fn get_sys_proxy() -> Result<GetSysProxyResponse> {
     let current = (Sysproxy::get_system_proxy()).context("failed to get system proxy")?;
 
-    let mut map = Mapping::new();
-    map.insert("enable".into(), current.enable.into());
-    map.insert(
-        "server".into(),
-        format!("{}:{}", current.host, current.port).into(),
-    );
-    map.insert("bypass".into(), current.bypass.into());
+    let server = format!("{}:{}", current.host, current.port);
 
-    Ok(map)
+    Ok(GetSysProxyResponse {
+        enable: current.enable,
+        host: current.host,
+        port: current.port,
+        bypass: current.bypass,
+        server,
+    })
 }
 
 #[tauri::command]

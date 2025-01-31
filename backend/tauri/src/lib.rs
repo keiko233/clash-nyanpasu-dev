@@ -23,8 +23,8 @@ use crate::{
     utils::{init, resolve},
 };
 use specta_typescript::{BigIntExportBehavior, Typescript};
-use tauri_specta::{collect_commands, Builder};
 use tauri::{Emitter, Manager};
+use tauri_specta::{collect_commands, Builder};
 use utils::resolve::{is_window_opened, reset_window_open_counter};
 
 rust_i18n::i18n!("../../locales");
@@ -187,9 +187,9 @@ pub fn run() -> std::io::Result<()> {
         // clash
         ipc::get_clash_info,
         ipc::get_clash_logs,
-        ipc::patch_clash_config,
+        // ipc::patch_clash_config,
         ipc::change_clash_core,
-        ipc::get_runtime_config,
+        // ipc::get_runtime_config,
         ipc::get_runtime_yaml,
         ipc::get_runtime_exists,
         ipc::get_postprocessing_output,
@@ -211,14 +211,14 @@ pub fn run() -> std::io::Result<()> {
         ipc::enhance_profiles,
         ipc::patch_profiles_config,
         ipc::view_profile,
-        ipc::patch_profile,
-        ipc::create_profile,
+        // ipc::patch_profile,
+        // ipc::create_profile,
         ipc::import_profile,
         ipc::reorder_profile,
         ipc::reorder_profiles_by_list,
         ipc::update_profile,
         ipc::delete_profile,
-        ipc::read_profile_file,
+        // ipc::read_profile_file,
         ipc::save_profile_file,
         ipc::save_window_size_state,
         ipc::get_custom_app_dir,
@@ -254,15 +254,24 @@ pub fn run() -> std::io::Result<()> {
     ]);
 
     #[cfg(debug_assertions)]
-    specta_builder
-        .export(
+    {
+        const SPECTA_BINDINGS_PATH: &str = "../../frontend/interface/src/ipc/bindings.ts";
+
+        match specta_builder.export(
             Typescript::default()
                 .formatter(specta_typescript::formatter::prettier)
                 .bigint(BigIntExportBehavior::Number)
                 .header("/* eslint-disable */\n// @ts-nocheck"),
-            "../../../frontend/interface/src/ipc/bindings.ts",
-        )
-        .expect("Failed to export typescript bindings");
+                SPECTA_BINDINGS_PATH,
+        ) {
+            Ok(_) => {
+                log::info!("Exported typescript bindings, path: {}", SPECTA_BINDINGS_PATH);
+            }
+            Err(e) => {
+                panic!("Failed to export typescript bindings: {}", e);
+            }
+        };
+    }
 
     let verge = { Config::verge().latest().language.clone().unwrap() };
     rust_i18n::set_locale(verge.as_str());
